@@ -1,0 +1,101 @@
+:root {
+    --c-background: rgb(131, 150, 249);
+    --c-block: rgb(223, 240, 255);
+    --c-button: rgb(254, 201, 223);
+    --c-button-hover: rgb(254, 201, 223);
+    --c-button-text: rgb(112, 68, 87);
+    --c-button-hover-text: rgb(112, 68, 87);
+    --c-input: white;
+    --c-input-text: black;
+    --c-input-placeholder: gray;
+    --c-link: rgb(194, 252, 244);
+    --c-link-hover: rgb(132, 235, 255);
+    --c-link-visited: rgb(251, 244, 215);
+
+    --c-text: white;
+    --c-input-border-hover: rgba(254, 201, 223, .5);
+    --c-input-border-focus: rgb(254, 201, 223);
+}
+
+html {
+    font-size: 14px;
+}
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    background-color: var(--c-background);
+    color: var(--c-text);
+}
+
+input {
+    width: 100%;
+    padding: 13px 20px;
+    border: 3px solid var(--c-input);
+    border-radius: 20px;
+    background-color: var(--c-input);
+    color: var(--c-input-text);
+}
+input:hover {
+    border-color: var(--c-input-border-hover);
+}
+input:focus {
+    outline: none;
+    border-color: var(--c-input-border-focus);
+}
+input:focus::placeholder {
+    color: transparent;
+}
+
+button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 13px;
+    font-weight: bold;
+    background-color: var(--c-button);
+    color: var(--c-button-text);
+}
+button:hover {
+    background-color: var(--c-button-hover);
+}
+
+a {
+    color: var(--c-link);
+    font-weight: bold;
+}
+a:hover {
+    color: var(--c-link-hover);
+}
+a:visited {
+    color: var(--c-link-visited);
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 5px 5px 10px;
+    border: 3px solid var(--c-input);
+    border-radius: 20px;
+    background-color: var(--c-input);
+}
+.search-input {
+    padding: 13px 15px 13px 10px;
+    border: none;
+    border-radius: 0px;
+}
+.search-bar:hover {
+    border-color: var(--c-input-border-hover);
+}
+.search-bar:focus-within {
+    border-color: var(--c-input-border-focus);
+}
+
+.text-block {
+    padding: 20px;
+    border-radius: 20px;
+    background-color: var(--c-block);
+    color: var(--c-input-text);
+}

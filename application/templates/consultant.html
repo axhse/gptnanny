@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}Спроси{% endblock %}
+
+{% load static %}
+{% block head %}
+<script src="{% static 'js/consultant.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="col-12 col-md-11 col-lg-8 col-xl-6 col-xxl-5">
+    <div style="height: 50px;"></div>
+    <h5>Сложно быть родителем? Получи ответ на свой вопрос!</h5>
+    <h5>Мы используем базу знаний, составленную экспертами</h5>
+    <div style="height: 60px;"></div>
+    <div class="search-bar">
+        <input id="questionInput" class="search-input" placeholder="Спроси"
+               maxlength="500" oninput="updateSearchBar(this)">
+        <button id="searchButton" class="search-button" onclick="ask()" hidden>Спросить</button>
+    </div>
+    <div id="loaderBlock" class="mt-5" hidden></div>
+    <div id="answerBlock" class="text-block mt-3" hidden></div>
+    <div id="sourceBlock" class="mt-4" hidden>
+        <a id="sourceLink"></a>
+    </div>
+</div>
+{% endblock %}
