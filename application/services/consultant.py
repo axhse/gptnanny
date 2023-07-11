@@ -26,6 +26,10 @@ class Consultant(ABC):
     def ask(self, question: str) -> Optional[Answer]:
         pass
 
+    @abstractmethod
+    def is_valid_question(self, question: Optional[str]) -> bool:
+        pass
+
 
 class MockConsultant(Consultant):
     def ask(self, question: str) -> Optional[Answer]:
@@ -35,6 +39,9 @@ class MockConsultant(Consultant):
         source = Source("Google", "https://google.com")
         answer = Answer("[The answer will be here]", [source])
         return answer
+
+    def is_valid_question(self, question: Optional[str]) -> bool:
+        return question is not None and 1 <= len(question) <= 500
 
 
 class XataConsultant(Consultant):
@@ -61,3 +68,7 @@ class XataConsultant(Consultant):
         except Exception as error:
             LOGGER.error(error)
             return None
+
+    def is_valid_question(self, question: Optional[str]) -> bool:
+        # TODO?: check symbols and language
+        return question is not None and 1 <= len(question) <= 500

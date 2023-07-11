@@ -2,7 +2,7 @@ import json
 import logging
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from .services.app import APP
 
@@ -16,9 +16,15 @@ def homepage(request):
     return render(request, "consultant.html")
 
 
+def redirect_to_homepage(request):
+    return redirect(homepage)
+
+
 def ask(request):
     question = str(request.POST.get("question"))
     LOGGER.info(f"Question[{question}]")
+    if not APP.consultant.is_valid_question(question):
+        return HttpResponse(status=400)
     answer = APP.consultant.ask(question)
     if answer is None:
         LOGGER.info(f"Answer is null")
