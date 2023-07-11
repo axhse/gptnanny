@@ -4,15 +4,15 @@ from typing import Dict, Optional
 
 
 class S(IntEnum):
-    TRANSLATOR_API_KEY = auto()
     XATA_API_KEY = auto()
-    XATA_DB_URL = auto()
 
 
 class Secrets:
     def __init__(self):
-        names = set(environ.keys()).intersection({s.name for s in S})
-        self.__values: Dict[S, str] = {name: environ[name] for name in names}
+        self.__values: Dict[S, str] = dict()
+        for secret in S:
+            if secret.name in environ:
+                self.__values[secret] = environ[secret.name]
 
     def get_or_none(self, secret: S) -> Optional[str]:
         return self.__values.get(secret)

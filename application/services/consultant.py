@@ -6,6 +6,8 @@ from typing import List, Optional
 
 from xata import XataClient
 
+from application.services.data_helpers import resp_to_str
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -45,24 +47,41 @@ class MockConsultant(Consultant):
 
 
 class XataConsultant(Consultant):
-    def __init__(self, api_key: str, db_url: str):
-        self.__client: XataClient = XataClient(api_key=api_key, db_url=db_url)
+    WORKSPACE_ID = "77mmm6"
+    REGION = "eu-central-1"
+    DB_NAME = "gptnanny"
+    TABLE_NAME = "knowledge"
+    BRANCH_NAME = "main"
+
+    def __init__(self, api_key: str):
+        self.__client: XataClient = XataClient(
+            api_key=api_key,
+            workspace_id=self.WORKSPACE_ID,
+            region=self.REGION,
+            db_name=self.DB_NAME,
+            branch_name=self.BRANCH_NAME,
+        )
 
     def ask(self, question) -> Optional[Answer]:
         try:
             payload = {"question": question}
-            resp = self.__client.search_and_filter().askTable(
-                "knowledge", payload, "nanny", "main"
+            answer_resp = self.__client.search_and_filter().askTable(
+                self.TABLE_NAME, payload
             )
-            if resp.status_code != 200:
+            LOGGER.debug(resp_to_str(answer_resp))
+            if answer_resp.status_code != 200:
                 return None
-            answer = Answer(resp.json()["answer"], list())
-            for source_id in resp.json()["records"][:1]:
-                source = self.__client.records().getRecord(
-                    "knowledge", source_id, "nanny", "main"
+            answer = Answer(answer_resp.json()["answer"], list())
+            source_ids = answer_resp.json()["records"][:1]
+            for source_id in source_ids:
+                source_resp = self.__client.records().getRecord(
+                    self.TABLE_NAME, source_id
                 )
+                LOGGER.debug(resp_to_str(source_resp))
+                if source_resp.status_code != 200:
+                    return None
                 answer.sources.append(
-                    Source(source.json()["title"], source.json()["href"])
+                    Source(source_resp.json()["title"], source_resp.json()["href"])
                 )
             return answer
         except Exception as error:

@@ -17,7 +17,7 @@ def build_app() -> App:
     if conf[P.IS_CONSULTANT_MOCK]:
         consultant = MockConsultant()
     else:
-        consultant = XataConsultant(secrets[S.XATA_DB_URL], secrets[S.XATA_DB_URL])
+        consultant = XataConsultant(secrets[S.XATA_API_KEY])
     return App(consultant)
 
 
