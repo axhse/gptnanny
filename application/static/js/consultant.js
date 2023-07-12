@@ -19,7 +19,7 @@ async function ask() {
             question: question,
             csrfmiddlewaretoken: csrfToken,
         },
-        timeout: 30000,  // 30 seconds
+        timeout: 40000,  // 40 seconds
         success: function(answer) {
             loaderBlock.hidden = true;
             removeLoader(loaderBlock);

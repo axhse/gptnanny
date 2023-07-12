@@ -3,15 +3,15 @@ from typing import Any, Dict
 
 
 class P(IntEnum):
-    IS_CONSULTANT_MOCK = auto()
+    IS_MOCK = auto()
 
 
 ALL_CONF: Dict[str, Dict[P, Any]] = {
     "mock": {
-        P.IS_CONSULTANT_MOCK: True,
+        P.IS_MOCK: True,
     },
     "prod": {
-        P.IS_CONSULTANT_MOCK: False,
+        P.IS_MOCK: False,
     },
 }
 

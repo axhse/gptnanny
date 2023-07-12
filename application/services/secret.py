@@ -5,6 +5,7 @@ from typing import Dict, Optional
 
 class S(IntEnum):
     XATA_API_KEY = auto()
+    LECTO_API_KEY = auto()
 
 
 class Secrets:
