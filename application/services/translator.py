@@ -52,7 +52,7 @@ class LectoTranslator(Translator):
         if lang_from is not None:
             body.update({"from": lang_from.value})
         resp = requests.post(url=url, headers=headers, json=body)
-        LOGGER.debug(resp_to_str(resp))
         if resp.status_code != 200:
+            LOGGER.warning(resp_to_str(resp))
             return None
         return resp.json()["translations"][0]["translated"][0]

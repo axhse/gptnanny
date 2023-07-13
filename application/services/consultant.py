@@ -2,7 +2,7 @@ import logging
 from abc import ABC, abstractmethod
 from random import random
 from time import sleep
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from xata import XataClient
 
@@ -21,6 +21,18 @@ class Answer:
     def __init__(self, message: str, sources: List[Source]):
         self.message: str = message
         self.sources: List[Source] = sources
+
+    def json(self) -> Dict:
+        return {
+            "message": self.message,
+            "sources": [
+                {
+                    "title": source.title,
+                    "href": source.href,
+                }
+                for source in self.sources
+            ]
+        }
 
 
 class Consultant(ABC):
@@ -61,8 +73,8 @@ class XataConsultant(Consultant):
             answer_resp = self.__client.search_and_filter().askTable(
                 self.TABLE_NAME, payload
             )
-            LOGGER.debug(resp_to_str(answer_resp))
             if answer_resp.status_code != 200:
+                LOGGER.warning(resp_to_str(answer_resp))
                 return None
             answer = Answer(answer_resp.json()["answer"], list())
             source_ids = answer_resp.json()["records"][:1]
@@ -70,8 +82,8 @@ class XataConsultant(Consultant):
                 source_resp = self.__client.records().getRecord(
                     self.TABLE_NAME, source_id
                 )
-                LOGGER.debug(resp_to_str(source_resp))
                 if source_resp.status_code != 200:
+                    LOGGER.warning(resp_to_str(source_resp))
                     return None
                 answer.sources.append(
                     Source(source_resp.json()["title"], source_resp.json()["href"])

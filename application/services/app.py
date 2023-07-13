@@ -4,6 +4,7 @@ from .appconf import P, get_conf
 from .consultant import MockConsultant, XataConsultant
 from .question_handler import QuestionHandler
 from .secret import S, Secrets
+from .tracing import MockTracing
 from .translator import LectoTranslator, MockTranslator
 
 
@@ -22,7 +23,8 @@ def build_app() -> App:
     else:
         consultant = XataConsultant(secrets[S.XATA_API_KEY])
         translator = LectoTranslator(secrets[S.LECTO_API_KEY])
-    return App(QuestionHandler(consultant, translator))
+    tracing = MockTracing()
+    return App(QuestionHandler(consultant, translator, tracing))
 
 
 APP = build_app()

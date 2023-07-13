@@ -24,10 +24,5 @@ def ask(request):
     answer = APP.question_handler.ask(question)
     if answer is None:
         return HttpResponse(status=500)
-    response_data = {
-        "message": answer.message,
-        "sources": [
-            {"title": source.title, "href": source.href} for source in answer.sources
-        ],
-    }
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    resp_content = json.dumps(answer.json())
+    return HttpResponse(resp_content, content_type="application/json")
