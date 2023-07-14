@@ -6,8 +6,6 @@ from django.shortcuts import redirect, render
 from .services.app import APP
 from .services.validators import is_valid_question
 
-# Create your views here.
-
 
 def homepage(request):
     return render(request, "consultant.html")
