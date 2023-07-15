@@ -1,5 +1,5 @@
 function showSlowly(element, duration) {
-    if (!element.hidden) {
+    if (!element.hidden && element.style.opacity != '0') {
         return;
     }
     element.style.opacity = 0;
@@ -26,8 +26,8 @@ function showSlowly(element, duration) {
     nextFrame();
 }
 
-function hideSlowly(element, duration) {
-    if (element.hidden) {
+function hideSlowly(element, duration, makeHidden = true) {
+    if (element.hidden || element.style.opacity != '1') {
         return;
     }
     element.style.opacity = 1;
@@ -40,7 +40,9 @@ function hideSlowly(element, duration) {
     }
     function nextFrame() {
         if (element.style.opacity == '0') {
-            element.hidden = true;
+            if (makeHidden) {
+                element.hidden = true;
+            }
             return;
         }
         let newOpacity = parseFloat(element.style.opacity) - 1 / factor;
@@ -63,6 +65,23 @@ function removeLoader(loaderBlock) {
 	for (let i = loaderBlock.children.length - 1; i >= 0; i--) {
         loaderBlock.children[i].remove();
 	}
+}
+
+function startWaiting(buttonId, loaderBlockId) {
+    const animationDuration = 1000;
+    let button = document.getElementById(buttonId);
+    let loaderBlock = document.getElementById(loaderBlockId);
+    button.disabled = true;
+    addLoader(loaderBlock);
+    showSlowly(loaderBlock, animationDuration);
+}
+
+function stopWaiting(buttonId, loaderBlockId) {
+    let button = document.getElementById(buttonId);
+    let loaderBlock = document.getElementById(loaderBlockId);
+    loaderBlock.hidden = true;
+    removeLoader(loaderBlock);
+    button.disabled = false;
 }
 
 function updateSearchBar(searchInput) {
@@ -88,4 +107,15 @@ function updateSearchBar(searchInput) {
 	        hideSlowly(child, animationDuration);
 	    }
 	}
+}
+
+function updateTextarea(textarea) {
+    let newRows = 0;
+    if (textarea.value !== null) {
+        newRows = textarea.value.split('\n').length;
+    }
+    if (newRows < 4) {
+        newRows = 4;
+    }
+    textarea.rows = newRows;
 }

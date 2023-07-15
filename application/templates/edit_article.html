@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Редактирование{% endblock %}
+
+{% load static %}
+{% block head %}
+<script src="{% static 'js/article.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+    <h5>Редактирование статьи</h5>
+    <div class="mx-2" style="height: 50px;" align="left">
+        <button id="buttonSave" style="float: left; opacity: 0;" onclick="saveArticle()" disabled>
+            Сохранить
+        </button>
+        <div id="savingLoader" class="ms-4" style="display: inline-block;"></div>
+        <button id="buttonDelete" style="float: right;" onclick="deleteArticle()">Удалить</button>
+        <div id="deletionLoader" class="me-4" style="display: inline-block; float: right;"></div>
+    </div>
+
+    <div class="mt-4"></div>
+    <input id="idInput" value="{{ article.id }}" hidden>
+    <input id="titleInput" placeholder="Заголовок" maxlength="200"
+           oninput="updateForm()" value="{{ article.title }}">
+    <div class="mt-3"></div>
+    <input id="hrefInput" placeholder="Ссылка" maxlength="200"
+           oninput="updateForm()" value="{{ article.href }}">
+    <div class="mt-5"></div>
+    <textarea id="contentInput" placeholder="Текст" maxlength="10000"
+              oninput="updateForm()">{{ article.content }}</textarea>
+</div>
+{% endblock %}

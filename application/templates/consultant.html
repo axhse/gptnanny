@@ -16,12 +16,12 @@
     <div class="search-bar">
         <input id="questionInput" class="search-input" placeholder="Спроси"
                maxlength="500" oninput="updateSearchBar(this)">
-        <button id="searchButton" class="search-button" onclick="ask()" hidden>Спросить</button>
+        <button id="searchButton" onclick="ask()" hidden>Спросить</button>
     </div>
     <div id="loaderBlock" class="mt-5" hidden></div>
     <div id="answerBlock" class="text-block mt-3" hidden></div>
     <div id="sourceBlock" class="mt-4" hidden>
-        <a id="sourceLink"></a>
+        <a id="sourceLink" target="_blank"></a>
     </div>
 </div>
 {% endblock %}

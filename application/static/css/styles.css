@@ -51,6 +51,26 @@ input:focus::placeholder {
     color: transparent;
 }
 
+textarea {
+    resize: none;
+    width: 100%;
+    padding: 13px 20px;
+    border: 3px solid var(--c-input);
+    border-radius: 20px;
+    background-color: var(--c-input);
+    color: var(--c-input-text);
+}
+textarea:hover {
+    border-color: var(--c-input-border-hover);
+}
+textarea:focus {
+    outline: none;
+    border-color: var(--c-input-border-focus);
+}
+textarea:focus::placeholder {
+    color: transparent;
+}
+
 button {
     padding: 13px 20px;
     border: none;
@@ -99,4 +119,12 @@ a:visited {
     border-radius: 20px;
     background-color: var(--c-block);
     color: var(--c-input-text);
+}
+
+.msg {
+    color: #F9F871;
+}
+
+.input-error {
+    background-color: #FFD398;
 }

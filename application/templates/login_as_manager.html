@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% load static %}
+{% block head %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="col-11 col-md-10 col-lg-7 col-xl-6 col-xxl-5">
+    <div style="height: 100px;"></div>
+    <h5>Вход в панель менеджера</h5>
+    <div class="mt-5"></div>
+    <div id="tokenForm" class="search-bar">
+        <input id="tokenInput" class="search-input" placeholder="Токен"
+               maxlength="200" oninput="updateSearchBar(this)">
+        <button id="submit" onclick="loginByToken('/articles')" hidden>Войти</button>
+    </div>
+    <div id="loaderBlock" class="mt-5" hidden></div>
+</div>
+{% endblock %}
