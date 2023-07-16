@@ -94,7 +94,7 @@ class MockConsultant(Consultant):
         sleep(1 + random() * 2)
         articles = list()
         for article in self._articles:
-            self._articles.append(Article(article.id, article.title, article.href))
+            articles.append(Article(article.id, article.title, article.href))
         return articles
 
     def create_article(self, article: Article) -> Optional[str]:
