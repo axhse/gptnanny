@@ -16,7 +16,7 @@ class App:
 
 
 def build_app() -> App:
-    conf_name = environ.get("APP_CONF_NAME", "mock")
+    conf_name = environ.get("APPCONF", "mock")
     conf = get_conf(conf_name)
     if conf[P.IS_MOCK]:
         consultant = MockConsultant()
