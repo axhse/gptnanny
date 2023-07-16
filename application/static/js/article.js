@@ -17,11 +17,14 @@ async function saveArticle() {
         data: JSON.stringify(body),
         contentType: 'application/json; charset=utf-8',
         timeout: 40000,  // 40 seconds
-        success: function() {
+        success: function(savedData) {
             stopWaiting('buttonSave', 'savingLoader');
             hideSlowly(buttonSave, animationDuration, false);
             buttonSave.disabled = true;
             buttonDelete.disabled = false;
+            if (savedData !== null && savedData != '') {
+                document.getElementById('idInput').value = savedData['id'];
+            }
         },
         error: function() {
             stopWaiting('buttonSave', 'savingLoader');

@@ -24,7 +24,7 @@ def build_app() -> App:
     else:
         consultant = XataConsultant(environ["XATA_API_KEY"])
         translator = LectoTranslator(environ["LECTO_API_KEY"])
-    manager_token = environ.get("MANAGER_TOKEN")
+    manager_token = environ["MANAGER_TOKEN"]
     user, _ = User.objects.get_or_create("manager")
     user.set_password(manager_token)
     content_type = ContentType.objects.get_for_model(User)

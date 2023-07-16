@@ -92,7 +92,10 @@ class MockConsultant(Consultant):
 
     def get_articles_short(self) -> Optional[List[Article]]:
         sleep(1 + random() * 2)
-        return self._articles
+        articles = list()
+        for article in self._articles:
+            self._articles.append(Article(article.id, article.title, article.href))
+        return articles
 
     def create_article(self, article: Article) -> Optional[str]:
         sleep(1 + random() * 2)
@@ -136,28 +139,85 @@ class XataConsultant(Consultant):
     def ask(self, question) -> Optional[Answer]:
         try:
             payload = {"question": question}
-            answer_resp = self.__client.search_and_filter().askTable(
-                self.TABLE_NAME, payload
-            )
-            LOGGER.debug(resp_to_str(answer_resp))
-            if answer_resp.status_code != 200:
+            resp = self.__client.search_and_filter().askTable(self.TABLE_NAME, payload)
+            LOGGER.debug(resp_to_str(resp))
+            if resp.status_code != 200:
                 return None
-            answer = Answer(answer_resp.json()["answer"], list())
-            article_ids = answer_resp.json()["records"][:1]
+            answer = Answer(resp.json()["answer"], list())
+            article_ids = resp.json()["records"][:1]
             for article_id in article_ids:
-                article_resp = self.__client.records().getRecord(
-                    self.TABLE_NAME, article_id
-                )
-                LOGGER.debug(resp_to_str(article_resp))
-                if article_resp.status_code != 200:
+                article = self.get_article(article_id)
+                if article is None:
                     return None
-                answer.articles.append(
-                    Article(
-                        title=article_resp.json()["title"],
-                        href=article_resp.json()["href"],
-                    )
-                )
+                article.id = ""
+                article.content = ""
+                answer.articles.append(article)
             return answer
         except Exception as error:
             LOGGER.error(error)
             return None
+
+    def get_article(self, article_id: str) -> Optional[Article]:
+        try:
+            resp = self.__client.records().getRecord(self.TABLE_NAME, article_id)
+            LOGGER.debug(resp_to_str(resp))
+            if resp.status_code != 200:
+                return None
+            props = resp.json()
+            return Article(props["id"], props["title"], props["href"], props["content"])
+        except Exception as error:
+            LOGGER.error(error)
+            return None
+
+    def get_articles_short(self) -> Optional[List[Article]]:
+        columns = [
+            {"name": "id", "type": "string"},
+            {"name": "title", "type": "string"},
+            {"name": "href", "type": "string"},
+        ]
+        payload = {
+            "columns": columns,
+        }
+        resp = self.__client.data().queryTable(self.TABLE_NAME, payload)
+        LOGGER.debug(resp_to_str(resp))
+        if resp.status_code != 200:
+            return None
+        records = list()
+        for data in resp.json()["records"]:
+            records.append(Article(data["id"], data["title"], data["href"]))
+        return records
+
+    def create_article(self, article: Article) -> Optional[str]:
+        try:
+            data = article.json()
+            data.pop("id")
+            resp = self.__client.records().insertRecord(self.TABLE_NAME, data)
+            LOGGER.debug(resp_to_str(resp))
+            if resp.status_code != 201:
+                return None
+            return resp.json()["id"]
+        except Exception as error:
+            LOGGER.error(error)
+            return None
+
+    def update_article(self, article: Article) -> bool:
+        try:
+            data = article.json()
+            data.pop("id")
+            resp = self.__client.records().updateRecordWithID(
+                self.TABLE_NAME, article.id, data
+            )
+            LOGGER.debug(resp_to_str(resp))
+            return resp.status_code == 200
+        except Exception as error:
+            LOGGER.error(error)
+            return False
+
+    def delete_article(self, article_id: str) -> bool:
+        try:
+            resp = self.__client.records().deleteRecord(self.TABLE_NAME, article_id)
+            LOGGER.debug(resp_to_str(resp))
+            return resp.status_code == 204
+        except Exception as error:
+            LOGGER.error(error)
+            return False
