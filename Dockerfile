@@ -10,7 +10,7 @@ COPY . /app/
 
 EXPOSE 8000
 
-RUN python manage.py migrate
+RUN export MANAGER_TOKEN=x && python manage.py migrate && unset MANAGER_TOKEN
 RUN python manage.py collectstatic --noinput
 
 ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
