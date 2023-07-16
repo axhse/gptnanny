@@ -18,7 +18,6 @@
         <button id="buttonDelete" style="float: right;" onclick="deleteArticle()">Удалить</button>
         <div id="deletionLoader" class="me-4" style="display: inline-block; float: right;"></div>
     </div>
-
     <div class="mt-4"></div>
     <input id="idInput" value="{{ article.id }}" hidden>
     <input id="titleInput" placeholder="Заголовок" maxlength="200"
@@ -29,5 +28,7 @@
     <div class="mt-5"></div>
     <textarea id="contentInput" placeholder="Текст" maxlength="10000"
               oninput="updateForm()">{{ article.content }}</textarea>
+    <div class="mt-5"></div>
+    <a href="/articles">Все статьи</a>
 </div>
 {% endblock %}
