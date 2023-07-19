@@ -113,7 +113,7 @@ class MockConsultant(Consultant):
         return False
 
     def delete_article(self, article_id: str) -> bool:
-        sleep(1 + random() * 2)
+        sleep(0.5 + random() * 2)
         for index in range(len(self._articles) - 1, -1, -1):
             if self._articles[index].id == article_id:
                 self._articles.pop(index)

@@ -12,7 +12,8 @@ $(document).ready(function() {
     ];
 
     $('#buttonSave').click(async function() {
-        const animationDuration = 300;
+        const buttonDeleteFadingSpeed = 1000;
+        const isCreation = $('#idInput').val() === '';
         const body = {
             id: $('#idInput').val(),
             title: $('#titleInput').val(),
@@ -31,6 +32,10 @@ $(document).ready(function() {
                 endWait('buttonSave', activeElements.slice(1), true);
                 if (savedData !== null && savedData !== '') {
                     $('#idInput').val(savedData['id']);
+                }
+                if (isCreation) {
+                    $('#buttonDelete').prop('disabled', false);
+                    $('#buttonDelete').stop().fadeTo(buttonDeleteFadingSpeed, 1);
                 }
             },
             error: function() {
@@ -76,4 +81,9 @@ $(document).ready(function() {
     });
     $('input, textarea').trigger('input');
     isInitial = false;
+
+    if ($('#idInput').val() !== '') {
+        $('#buttonDelete').prop('disabled', false);
+        $('#buttonDelete').removeClass('concealed');
+    }
 });

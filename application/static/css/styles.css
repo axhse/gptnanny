@@ -2,9 +2,11 @@
     --c-background: rgb(131, 150, 249);
     --c-block: rgb(223, 240, 255);
     --c-button: rgb(254, 201, 223);
-    --c-button-hover: rgb(254, 201, 223);
     --c-button-text: rgb(112, 68, 87);
-    --c-button-hover-text: rgb(112, 68, 87);
+    --c-button-hover: rgb(254, 201, 223, 0.9);
+    --c-button-hover-text: rgb(112, 68, 87, 0.9);
+    --c-button-active: rgb(254, 201, 223, .8);
+    --c-button-active-text: rgb(112, 68, 87, .8);
     --c-input: white;
     --c-input-text: black;
     --c-input-placeholder: gray;
@@ -82,11 +84,13 @@ button {
     color: var(--c-button-text);
     transition: all 0.3s;
 }
-button:active {
-    opacity: 0.7;
-}
 button:hover {
     background-color: var(--c-button-hover);
+    color: var(--c-button-hover-text);
+}
+button:active {
+    background-color: var(--c-button-active);
+    color: var(--c-button-active-text);
 }
 
 a {
@@ -131,9 +135,9 @@ a:visited {
 }
 
 .form-msg {
-    color: #F9F871;
+    color: #FFE4F8;
 }
 
 .input-error {
-    background-color: #FFD398;
+    background-color: #D5D8FF;
 }
