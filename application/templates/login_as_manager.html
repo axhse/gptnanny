@@ -12,11 +12,12 @@
     <div style="height: 100px;"></div>
     <h5>Вход в панель менеджера</h5>
     <div class="mt-5"></div>
-    <div id="tokenForm" class="search-bar">
-        <input id="tokenInput" class="search-input" placeholder="Токен"
-               maxlength="200" oninput="updateSearchBar(this)">
-        <button id="submit" onclick="loginByToken('/articles')" hidden>Войти</button>
+    <div class="request-block">
+        <input id="tokenInput" placeholder="Токен" maxlength="200">
+        <button id="requestButton" class="button-task concealed" onclick="loginByToken('/articles')" disabled>
+            <span>Войти</span>
+        </button>
     </div>
-    <div id="loaderBlock" class="mt-5" hidden></div>
+    <span id="errorMessage" class="form-msg concealed"></span>
 </div>
 {% endblock %}

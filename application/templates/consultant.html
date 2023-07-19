@@ -13,14 +13,14 @@
     <h5>Сложно быть родителем? Получи ответ на свой вопрос!</h5>
     <h5>Мы используем базу знаний, составленную экспертами</h5>
     <div style="height: 60px;"></div>
-    <div class="search-bar">
-        <input id="questionInput" class="search-input" placeholder="Спроси"
-               maxlength="500" oninput="updateSearchBar(this)">
-        <button id="searchButton" onclick="ask()" hidden>Спросить</button>
+    <div class="request-block">
+        <input id="questionInput" placeholder="Спроси" maxlength="500">
+        <button id="requestButton" class="button-task concealed" disabled>
+            <span>Спросить</span>
+        </button>
     </div>
-    <div id="loaderBlock" class="mt-5" hidden></div>
-    <div id="answerBlock" class="text-block mt-3" hidden></div>
-    <div id="sourceBlock" class="mt-4" hidden>
+    <div id="answerBlock" class="concealed mt-3">
+        <div id="messageBlock" class="text-block mb-4"></div>
         <a id="sourceLink" target="_blank"></a>
     </div>
 </div>

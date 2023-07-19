@@ -39,6 +39,7 @@ input {
     border-radius: 20px;
     background-color: var(--c-input);
     color: var(--c-input-text);
+    transition: all 0.3s;
 }
 input:hover {
     border-color: var(--c-input-border-hover);
@@ -59,6 +60,7 @@ textarea {
     border-radius: 20px;
     background-color: var(--c-input);
     color: var(--c-input-text);
+    transition: all 0.3s;
 }
 textarea:hover {
     border-color: var(--c-input-border-hover);
@@ -78,6 +80,10 @@ button {
     font-weight: bold;
     background-color: var(--c-button);
     color: var(--c-button-text);
+    transition: all 0.3s;
+}
+button:active {
+    opacity: 0.7;
 }
 button:hover {
     background-color: var(--c-button-hover);
@@ -94,7 +100,11 @@ a:visited {
     color: var(--c-link-visited);
 }
 
-.search-bar {
+.concealed {
+    opacity: 0;
+}
+
+.request-block {
     display: flex;
     flex-direction: row;
     padding: 5px 5px 5px 10px;
@@ -102,16 +112,15 @@ a:visited {
     border-radius: 20px;
     background-color: var(--c-input);
 }
-.search-input {
-    padding: 13px 15px 13px 10px;
-    border: none;
-    border-radius: 0px;
-}
-.search-bar:hover {
+.request-block:hover {
     border-color: var(--c-input-border-hover);
 }
-.search-bar:focus-within {
+.request-block:focus-within {
     border-color: var(--c-input-border-focus);
+}
+.request-block > input {
+    padding: 13px 15px 13px 10px;
+    border: none;
 }
 
 .text-block {
@@ -121,7 +130,7 @@ a:visited {
     color: var(--c-input-text);
 }
 
-.msg {
+.form-msg {
     color: #F9F871;
 }
 

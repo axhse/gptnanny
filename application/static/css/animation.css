@@ -1,19 +1,34 @@
-.loader {
-    border: 10px solid var(--c-button);
+.button-task {
+    position: relative;
+}
+.button-task-wait > span {
+    visibility: hidden;
+    opacity: 0;
+}
+.button-task-hidden > span {
+    visibility: hidden;
+    opacity: 0;
+}
+.button-task-wait::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    border: 6px solid transparent;
+    border-top-color: var(--c-button-text);
     border-radius: 50%;
-    border-top: 10px solid var(--c-background);
-    width: 50px;
-    height: 50px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
+    animation: fadeIn 4s, spin 1.3s linear infinite;
 }
 
-/* Safari */
-@-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
+@keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
 }
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

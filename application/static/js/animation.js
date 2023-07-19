@@ -1,121 +1,70 @@
-function showSlowly(element, duration) {
-    if (!element.hidden && element.style.opacity != '0') {
+function beginWait(relatedButtonId = null, idsToDisable = null) {
+    const fadingSpeed = 1000;
+    if (idsToDisable !== null) {
+        if (typeof idsToDisable === 'string') {
+            idsToDisable = [idsToDisable];
+        }
+        for (let i = 0; i < idsToDisable.length; i++) {
+            $('#' + idsToDisable[i]).prop('disabled', true);
+        }
+    }
+    if (relatedButtonId === null) {
         return;
     }
-    element.style.opacity = 0;
-    element.hidden = false;
-    let factor = 25;
-    if (duration <= 200) {
-        factor = 10;
-    }
-    if (duration <= 50) {
-        factor = 4;
-    }
-    let iterationIndex = 0;
-    function nextFrame() {
-        let newOpacity = parseFloat(element.style.opacity) + 1 / factor;
-        if (newOpacity > 1) {
-            newOpacity = 1;
-        }
-        element.style.opacity = newOpacity;
-        ++iterationIndex;
-        if (iterationIndex < factor) {
-            setTimeout(nextFrame, duration / factor);
-        }
-    }
-    nextFrame();
+    $('#' + relatedButtonId).addClass('button-task-wait');
 }
 
-function hideSlowly(element, duration, makeHidden = true) {
-    if (element.hidden || element.style.opacity != '1') {
+function endWait(relatedButtonId = null, idsToEnable = null, hide = false) {
+    const fadingSpeed = 300;
+    if (idsToEnable !== null) {
+        if (typeof idsToEnable === 'string') {
+            idsToEnable = [idsToEnable];
+        }
+        for (let i = 0; i < idsToEnable.length; i++) {
+            $('#' + idsToEnable[i]).prop('disabled', false);
+        }
+    }
+    if (relatedButtonId === null) {
         return;
     }
-    element.style.opacity = 1;
-    let factor = 25;
-    if (duration <= 200) {
-        factor = 10;
+    const relatedButton = $('#' + relatedButtonId);
+    function removeLoader() {
+        relatedButton.removeClass('button-task-wait');
     }
-    if (duration <= 50) {
-        factor = 4;
+    if (hide) {
+        relatedButton.addClass('button-task-hidden');
+        relatedButton.stop().fadeTo(fadingSpeed, 0, removeLoader);
+    } else {
+        relatedButton.prop('disabled', false);
+        removeLoader();
     }
-    function nextFrame() {
-        if (element.style.opacity == '0') {
-            if (makeHidden) {
-                element.hidden = true;
-            }
-            return;
+}
+
+function updateRequestButton(button, isVisible) {
+    const fadingSpeed = 200;
+    if (isVisible) {
+        button.removeClass('button-task-hidden');
+        button.prop('disabled', false);
+        button.stop().fadeTo(fadingSpeed, 1);
+    } else {
+        button.prop('disabled', true);
+        button.stop().fadeTo(fadingSpeed, 0);
+    }
+}
+
+$(document).ready(function() {
+    $('.request-block > input').on('input', function() {
+        const hasValue = $(this).val() !== '';
+        const requestButton = $(this).parent().find('button');
+        updateRequestButton(requestButton, hasValue);
+    });
+
+    $('textarea').on('input', function() {
+        let newHeight = $(this).val().split('\n').length;
+        if (newHeight < 4) {
+            newHeight = 4;
         }
-        let newOpacity = parseFloat(element.style.opacity) - 1 / factor;
-        if (newOpacity < 0) {
-            newOpacity = 0;
-        }
-        element.style.opacity = newOpacity;
-        setTimeout(nextFrame, duration / factor);
-    }
-    nextFrame();
-}
-
-function addLoader(loaderBlock) {
-    let loader = document.createElement('div');
-    loader.classList.add('loader');
-    loaderBlock.appendChild(loader);
-}
-
-function removeLoader(loaderBlock) {
-	for (let i = loaderBlock.children.length - 1; i >= 0; i--) {
-        loaderBlock.children[i].remove();
-	}
-}
-
-function startWaiting(buttonId, loaderBlockId) {
-    const animationDuration = 1000;
-    let button = document.getElementById(buttonId);
-    let loaderBlock = document.getElementById(loaderBlockId);
-    button.disabled = true;
-    addLoader(loaderBlock);
-    showSlowly(loaderBlock, animationDuration);
-}
-
-function stopWaiting(buttonId, loaderBlockId) {
-    let button = document.getElementById(buttonId);
-    let loaderBlock = document.getElementById(loaderBlockId);
-    loaderBlock.hidden = true;
-    removeLoader(loaderBlock);
-    button.disabled = false;
-}
-
-function updateSearchBar(searchInput) {
-    const animationDuration = 300;
-    searchBar = searchInput.parentElement;
-	let hasValue = false;
-	for (let i = 0; i < searchBar.children.length; i++) {
-	    let child = searchBar.children[i];
-	    if (child.tagName !== 'INPUT') {
-	        continue;
-	    }
-	    hasValue = child.value !== null && child.value !== '';
-	}
-	for (let i = 0; i < searchBar.children.length; i++) {
-	    let child = searchBar.children[i];
-	    if (child.tagName !== 'BUTTON') {
-	        continue;
-	    }
-	    if (hasValue && child.hidden) {
-	        showSlowly(child, animationDuration);
-	    }
-	    if (!hasValue && !child.hidden) {
-	        hideSlowly(child, animationDuration);
-	    }
-	}
-}
-
-function updateTextarea(textarea) {
-    let newRows = 0;
-    if (textarea.value !== null) {
-        newRows = textarea.value.split('\n').length;
-    }
-    if (newRows < 4) {
-        newRows = 4;
-    }
-    textarea.rows = newRows;
-}
+        $(this).attr('rows', newHeight);
+    });
+    $('textarea').trigger('input');
+});
