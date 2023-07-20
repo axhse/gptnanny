@@ -6,7 +6,7 @@ class P(IntEnum):
     IS_MOCK = auto()
 
 
-BUILDS: Dict[str, Dict[P, Any]] = {
+BUILD_PARAMS: Dict[str, Dict[P, Any]] = {
     "mock": {
         P.IS_MOCK: True,
     },

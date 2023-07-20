@@ -26,7 +26,7 @@ def ask(request):
         return HttpResponse(status=500)
     if not validators.is_valid_question(question):
         return HttpResponse(status=400)
-    answer = APP.question_handler.ask(question)
+    answer = APP.chat_bot.ask(question)
     if answer is None:
         return HttpResponse(status=500)
     return HttpResponse(json.dumps(answer.json()), content_type="application/json")

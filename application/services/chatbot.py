@@ -4,7 +4,7 @@ from application.services.consultant import Answer, Consultant
 from application.services.translator import Lang, Translator
 
 
-class QuestionHandler:
+class ChatBot:
     def __init__(self, consultant: Consultant, translator: Translator):
         self.__consultant: Consultant = consultant
         self.__translator: Translator = translator
