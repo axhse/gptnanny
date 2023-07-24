@@ -81,7 +81,7 @@ docker run -d -p 8000:8000 --env-file .env gptnanny
 
 3. Выставление переменных окружения
 
-Обязательно установить MANAGER_TOKEN
+Обязательно установить `MANAGER_TOKEN`
 
 Linux
 ```

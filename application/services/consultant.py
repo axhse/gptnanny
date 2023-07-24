@@ -85,26 +85,27 @@ class MockConsultant(Consultant):
         return answer
 
     def get_article(self, article_id: str) -> Optional[Article]:
-        sleep(1 + random() * 2)
+        sleep(0.5 + random() * 1)
         for article in self._articles:
             if article.id == article_id:
                 return article
+        return None
 
     def get_articles_short(self) -> Optional[List[Article]]:
-        sleep(1 + random() * 2)
+        sleep(0.5 + random() * 1.5)
         articles = list()
         for article in self._articles:
             articles.append(Article(article.id, article.title, article.href))
         return articles
 
     def create_article(self, article: Article) -> Optional[str]:
-        sleep(1 + random() * 2)
+        sleep(0.5 + random() * 1)
         article.id = secrets.token_hex(24 // 2)
         self._articles.append(article)
         return article.id
 
     def update_article(self, article: Article) -> bool:
-        sleep(1 + random() * 2)
+        sleep(0.5 + random() * 1.5)
         for index in range(len(self._articles) - 1, -1, -1):
             if self._articles[index].id == article.id:
                 self._articles.pop(index)
@@ -113,7 +114,7 @@ class MockConsultant(Consultant):
         return False
 
     def delete_article(self, article_id: str) -> bool:
-        sleep(0.5 + random() * 2)
+        sleep(0.5 + random() * 1)
         for index in range(len(self._articles) - 1, -1, -1):
             if self._articles[index].id == article_id:
                 self._articles.pop(index)

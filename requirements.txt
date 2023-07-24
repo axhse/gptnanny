@@ -5,6 +5,8 @@ charset-normalizer==3.2.0
 deprecation==2.1.0
 Django==4.2.3
 django-bootstrap-v5==1.0.11
+django-cors-headers==4.2.0
+gunicorn==21.2.0
 idna==3.4
 orjson==3.9.2
 packaging==23.1
