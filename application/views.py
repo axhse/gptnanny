@@ -67,7 +67,7 @@ def get_articles(request):
 
 @permission_required("auth.manage", login_url="/manage")
 def edit_article(request, article_id):
-    article = APP.consultant.get_article(article_id)
+    article = APP.consultant.get_article(article_id, with_content=True)
     if article is None:
         return HttpResponse(status=404)
     data = {"article": article}

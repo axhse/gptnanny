@@ -45,7 +45,9 @@ class Consultant(ABC):
         pass
 
     @abstractmethod
-    def get_article(self, article_id: str) -> Optional[Article]:
+    def get_article(
+        self, article_id: str, with_content: bool = False
+    ) -> Optional[Article]:
         pass
 
     @abstractmethod
@@ -84,7 +86,9 @@ class MockConsultant(Consultant):
         answer = Answer("The answer will be here.", [article])
         return answer
 
-    def get_article(self, article_id: str) -> Optional[Article]:
+    def get_article(
+        self, article_id: str, with_content: bool = False
+    ) -> Optional[Article]:
         sleep(0.5 + random() * 1)
         for article in self._articles:
             if article.id == article_id:
@@ -158,14 +162,22 @@ class XataConsultant(Consultant):
             LOGGER.error(error)
             return None
 
-    def get_article(self, article_id: str) -> Optional[Article]:
+    def get_article(
+        self, article_id: str, with_content: bool = False
+    ) -> Optional[Article]:
         try:
-            resp = self.__client.records().getRecord(self.TABLE_NAME, article_id)
+            columns = ["id", "title", "href"]
+            if with_content:
+                columns.append("content")
+            resp = self.__client.records().getRecord(
+                self.TABLE_NAME, article_id, columns=columns
+            )
             LOGGER.debug(resp_to_str(resp))
             if resp.status_code != 200:
                 return None
             props = resp.json()
-            return Article(props["id"], props["title"], props["href"], props["content"])
+            content = props.get("content", "")
+            return Article(props["id"], props["title"], props["href"], content)
         except Exception as error:
             LOGGER.error(error)
             return None
