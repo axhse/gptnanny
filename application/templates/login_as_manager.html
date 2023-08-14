@@ -12,12 +12,13 @@
     <div style="height: 100px;"></div>
     <h5>Вход в панель менеджера</h5>
     <div class="mt-5"></div>
+    <input id="usernameInput" value="manager" hidden>
     <div class="request-block">
-        <input id="tokenInput" placeholder="Токен" maxlength="200">
-        <button id="requestButton" class="button-task concealed" onclick="loginByToken('/articles')" disabled>
+        <input id="passwordInput" placeholder="Пароль" maxlength="200">
+        <button id="requestButton" class="button-task concealed" onclick="login('/articles')" disabled>
             <span>Войти</span>
         </button>
     </div>
-    <span id="errorMessage" class="form-msg concealed"></span>
+    <span id="passwordMessage" class="form-msg concealed"></span>
 </div>
 {% endblock %}

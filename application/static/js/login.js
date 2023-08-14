@@ -1,11 +1,16 @@
-async function loginByToken(successUrl) {
-    $('#errorMessage').addClass('concealed');
-    beginWait('requestButton', ['requestButton', 'tokenInput']);
+async function login(successUrl) {
+    $('#usernameMessage').addClass('concealed');
+    $('#passwordMessage').addClass('concealed');
+    beginWait('requestButton', ['requestButton', 'usernameInput', 'passwordInput']);
+    const params = {
+        username: $('#usernameInput').val(),
+        password: $('#passwordInput').val(),
+    };
     await $.ajax({
-        url: '/check_token',
+        url: '/login',
         type: 'POST',
         headers: { 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val() },
-        data: { token: $('#tokenInput').val() },
+        data: params,
         timeout: 20000,  // 20 seconds
         success: function() {
             let returnUrl = new URLSearchParams(location.search).get('next');
@@ -14,10 +19,17 @@ async function loginByToken(successUrl) {
             }
             location.replace(returnUrl);
         },
-        error: function() {
-            endWait('requestButton', ['requestButton', 'tokenInput']);
-            $('#errorMessage').text('Invalid token');
-            $('#errorMessage').removeClass('concealed');
+        statusCode: {
+            403: function() {
+                endWait('requestButton', ['requestButton', 'usernameInput', 'passwordInput']);
+                $('#passwordMessage').text('Неправильный пароль');
+                $('#passwordMessage').removeClass('concealed');
+            },
+            404: function() {
+                endWait('requestButton', ['requestButton', 'usernameInput', 'passwordInput']);
+                $('#usernameMessage').text('Пользователь не найден');
+                $('#usernameMessage').removeClass('concealed');
+            },
         },
     });
 }

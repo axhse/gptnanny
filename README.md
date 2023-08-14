@@ -36,17 +36,17 @@ docker build -t gptnanny .
 
 2. Запуск `mock` сборки
 ```
-docker run -it -p 8000:8000 -e MANAGER_TOKEN=4444 gptnanny
+docker run -it -p 8000:8000 -e MANAGER_PWD=4444 gptnanny
 
 ```
 Приложение должно запуститься на http://localhost:8000  
 Вход в панель менеджера — http://localhost:8000/manage  
-Токен (пароль) менеджера — `4444`
+Пароль — `4444`
 
 3. Запуск `prod` сборки
 
 Создать файл **.env** по шаблону **.env.example**, в котором определить:  
-1) MANAGER_TOKEN — токен для менеджера
+1) MANAGER_PWD — пароль менеджера
 2) XATA_API_KEY — api-ключ для сервиса xata.io
 3) LECTO_API_KEY — api-ключ для сервиса-переводчика lecto.ai
 
@@ -65,7 +65,7 @@ docker pull axhse/gptnanny
 
 Запуск тех же контейнеров в режиме **detached**
 ```
-docker run -d -p 8000:8000 -e MANAGER_TOKEN=4444 gptnanny
+docker run -d -p 8000:8000 -e MANAGER_PWD=4444 gptnanny
 
 ```
 ```
@@ -81,17 +81,17 @@ docker run -d -p 8000:8000 --env-file .env gptnanny
 
 3. Выставление переменных окружения
 
-Обязательно установить `MANAGER_TOKEN`
+Обязательно установить `MANAGER_PWD`
 
 Linux
 ```
-export MANAGER_TOKEN=4444
+export MANAGER_PWD=4444
 
 ```
 
 Windows
 ```
-set MANAGER_TOKEN=4444
+set MANAGER_PWD=4444
 
 ```
 
