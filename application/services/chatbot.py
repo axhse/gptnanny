@@ -10,13 +10,16 @@ class ChatBot:
         self.__translator: Translator = translator
 
     def ask(self, question: str) -> Optional[Answer]:
-        translated_question = self.__translator.translate(question, Lang.EN)
+        translated_question, lang = self.__translator.translate(question, Lang.EN)
         if translated_question is None:
             return None
         answer = self.__consultant.ask(translated_question)
         if answer is None:
             return None
-        answer.message = self.__translator.translate(answer.message, Lang.RU, Lang.EN)
+        if lang is not None:
+            answer.message, _ = self.__translator.translate(
+                answer.message, lang, Lang.EN
+            )
         if answer.message is None:
             return None
         return answer

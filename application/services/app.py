@@ -3,7 +3,7 @@ from os import environ
 from .build_params import BUILD_PARAMS, P
 from .chatbot import ChatBot
 from .consultant import Consultant, MockConsultant, XataConsultant
-from .translator import LectoTranslator, MockTranslator, Translator
+from .translator import MockTranslator, SystranTranslator, Translator
 
 
 class App:
@@ -19,7 +19,7 @@ def build_app() -> App:
         translator = MockTranslator()
     else:
         consultant = XataConsultant(environ["XATA_API_KEY"])
-        translator = LectoTranslator(environ["LECTO_API_KEY"])
+        translator = SystranTranslator(environ["SYSTRAN_API_KEY"])
     return App(consultant, translator)
 
 
