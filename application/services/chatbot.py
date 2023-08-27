@@ -17,9 +17,12 @@ class ChatBot:
         if answer is None:
             return None
         if lang is not None:
-            answer.message, _ = self.__translator.translate(
+            translated_message, _ = self.__translator.translate(
                 answer.message, lang, Lang.EN
             )
+            if translated_message is None:
+                return None
+            answer.message = translated_message
         if answer.message is None:
             return None
         return answer

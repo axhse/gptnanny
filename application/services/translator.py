@@ -34,12 +34,7 @@ class MockTranslator(Translator):
     def translate(
         self, text: str, lang_to: Lang, lang_from: Optional[Lang] = None
     ) -> Optional[Tuple[str, Optional[Lang]]]:
-        if lang_from is None:
-            return f"[{text}] translated to {lang_to.value}", None
-        return (
-            f"[{text}] translated from {lang_from.value} to {lang_to.value}",
-            lang_from,
-        )
+        return text, lang_to
 
 
 class LectoTranslator(Translator):
@@ -66,7 +61,7 @@ class LectoTranslator(Translator):
         resp = requests.post(url=url, headers=headers, json=body)
         LOGGER.debug(resp_to_str(resp))
         if resp.status_code != 200:
-            return None
+            return None, None
         translated_text = resp.json()["translations"][0]["translated"][0]
         if lang_from is None:
             lang_from = str_to_lang(resp.json()["from"])
@@ -112,7 +107,7 @@ class SystranTranslator(Translator):
             # When the text is already translated response also has a error.
             if is_already_translated(resp):
                 return text, lang_to
-            return None
+            return None, None
         translated_text = resp.json()["outputs"][0]["output"]
         if lang_from is None:
             lang_from = str_to_lang(
