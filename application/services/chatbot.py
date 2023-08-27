@@ -12,7 +12,7 @@ class ChatBot:
     def ask(self, question: str) -> Optional[Answer]:
         translated_question, lang = self.__translator.translate(question, Lang.EN)
         if translated_question is None:
-            return None
+            translated_question = question
         answer = self.__consultant.ask(translated_question)
         if answer is None:
             return None
@@ -21,7 +21,7 @@ class ChatBot:
                 answer.message, lang, Lang.EN
             )
             if translated_message is None:
-                return None
+                translated_message = answer.message
             answer.message = translated_message
         if answer.message is None:
             return None
